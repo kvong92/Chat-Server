@@ -49,7 +49,7 @@ class ChatServer:
         for client in self.clients:
             self.broadcast(f"{client}")
             if not client == list(self.clients)[-1]:
-                self.broadcast("\n---------------------------\n")
+                self.broadcast("\n")
 
     # Shutdown server
     def shutdown_server(self):
