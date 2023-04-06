@@ -1,5 +1,6 @@
 import socket
 import os
+from sys import stdin
 import threading
 import time
 
@@ -19,7 +20,7 @@ class ChatClient:
 
     # Get username from client.py
     def get_username(self):
-        while True:
+        while self.connected:
             username = input("Enter your username: ")
             if username == "":
                 print("You must enter a username")
@@ -45,14 +46,14 @@ class ChatClient:
                     print("You are now disconnected from the server.")
                     self.connected = False
                     self.sock.close()
-                    os._exit(0)  # Terminate the client process
+                    os._exit(0)
                 print(message)
             except KeyboardInterrupt:
                 self.connected = False
-                os._exit(0)  # Terminate the client process
+                os._exit(0)
             except:
                 self.connected = False
-                os._exit(0)  # Terminate the client process
+                os._exit(0)
 
     def send_messages(self):
         while self.connected:
@@ -71,22 +72,10 @@ class ChatClient:
                 self.sock.send(message.encode())
             except KeyboardInterrupt:
                 self.connected = False
-                os._exit(0)  # Terminate the client process
+                os._exit(0)
             except:
                 self.connected = False
-                os._exit(0)  # Terminate the client process
-
-    # Start the client
-    # def start(self):
-    #     try:
-    #         receive_thread = threading.Thread(target=self.receive_messages)
-    #         receive_thread.start()
-    #         send_thread = threading.Thread(target=self.send_messages)
-    #         send_thread.start()
-    #     except KeyboardInterrupt:
-    #         print("\nKeyboard interrupt detected ...")
-    #         self.logout()
-    #         os._exit(0)  # Terminate the client process
+                os._exit(0)
 
      # Start the client
     def start(self):
@@ -114,7 +103,6 @@ class ChatClient:
         self.connected = False
         self.sock.close()
         print("Logout from the chat !")
-
 
 client_start = ChatClient('127.0.0.1', 1234)
 client_start.start()

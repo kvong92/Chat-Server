@@ -42,6 +42,14 @@ class ChatServer:
         print("---------------------------")
         for client in self.clients:
             print(f"{client}")
+        # print list of users connected to all users
+        self.broadcast("\n---------------------------\n")
+        self.broadcast("- List of users connected -\n")
+        self.broadcast("---------------------------\n")
+        for client in self.clients:
+            self.broadcast(f"{client}")
+            if not client == list(self.clients)[-1]:
+                self.broadcast("\n---------------------------\n")
 
     # Shutdown server
     def shutdown_server(self):
@@ -80,7 +88,6 @@ class ChatServer:
             os._exit(0)  # Terminate the client process
 
     # Get time of sending message
-
     def get_time(self):
         now = datetime.datetime.now()
         return now.strftime("%H:%M:%S")
@@ -134,8 +141,8 @@ class ChatServer:
                 if message:
                     print(f"<{username}> {message} ({now})")
                     self.broadcast(f"<{username}> {message} ({now})")
-                if message == "/list":
-                    self.print_list_users()
+                    if message == "/list":
+                        self.print_list_users()
                 else:
                     self.remove_client(username)
             except:
